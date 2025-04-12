@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>DS 약국 메뉴</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #fffbe6, #ffe36e);
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    header {
+      background-color: #FFD700;
+      padding: 15px;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      background-color: #fff8c6;
+      padding: 10px;
+      border-bottom: 2px solid #d1b700;
+    }
+
+    .tab {
+      margin: 5px;
+      padding: 8px 16px;
+      background-color: white;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .tab:hover {
+      background-color: #ffe36e;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .menu {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+      gap: 15px;
+    }
+
+    .item {
+      width: 150px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      text-align: center;
+      cursor: pointer;
+      padding: 10px;
+      transition: transform 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 220px;
+    }
+
+    .item:hover {
+      transform: translateY(-5px);
+    }
+
+    .item img {
+      width: 100%;
+      height: 150px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .item-name {
+      margin: 6px 0;
+      font-weight: bold;
+      font-size: 14px;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .price {
+      color: green;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: 999;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      border-radius: 12px;
+      width: 320px;
+      z-index: 1000;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .popup h3 {
+      margin-top: 0;
+    }
+
+    .popup-close {
+      margin-top: 10px;
+      background-color: #FFD700;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<header>💊 DS 약국 메뉴</header>
+
+<div class="tabs">
+  <div class="tab" onclick="filterMenu('all')">모두</div>
+  <div class="tab" onclick="filterMenu('로션')">로션</div>
+  <div class="tab" onclick="filterMenu('간경변제')">간경변제</div>
+  <div class="tab" onclick="filterMenu('기침약')">기침약</div>
+  <div class="tab" onclick="filterMenu('진통제')">진통제</div>
+  <div class="tab" onclick="filterMenu('치료제')">치료약</div>
+  <div class="tab" onclick="filterMenu('여드름약')">여드름약</div>
+  <div class="tab" onclick="filterMenu('감기약과비염')">감기약과비염</div>
+  <div class="tab" onclick="filterMenu('위약')">위약</div>
+  <div class="tab" onclick="filterMenu('건강식품')">건강식품</div>
+</div>
+
+<div class="menu">
+  <div class="item 로션" onclick="showDetails('Bepanthen Balm', 'Bepanthen Itch Relief Cream', 'Benpathen SensiDaily')">
+    <img src="images/Bepanthen Balm.jpg" alt="Bepanthen Balm">
+    <div class="item-name">Bepanthen Balm</div>
+    <div class="price">69.000₫</div>
+  </div>
+  <div class="item 로션" onclick="showDetails('Bepanthen Balm', 'Bepanthen Itch Relief Cream', 'Benpathen SensiDaily')">
+    <img src="images/Bepanthen Itch Relief Cream.jpg" alt="Bepanthen Itch Relief Cream">
+    <div class="item-name">Bepanthen Itch Relief Cream</div>
+    <div class="price">150.000₫</div>
+  </div>
+  <div class="item 로션" onclick="showDetails('Bepanthen Balm', 'Bepanthen Itch Relief Cream', 'Benpathen SensiDaily')">
+    <img src="images/Bepanthen SensiDaily.jpg" alt="Bepanthen SensiDaily">
+    <div class="item-name">Bepanthen SensiDaily</div>
+    <div class="price">550.000₫</div>
+  </div>
+  <div class="item 간경변제" onclick="showDetails('악티소 라도 무설탕 500MG', '악티소 라도 무설탕 200MG', '악티소 더파코 설탕', '악티소 비타민 C', '악티소 알약')">
+    <img src="images/악티소 라도 무설탕 500MG.jpg" alt="악티소 라도 무설탕 500MG">
+    <div class="item-name">악티소 라도 무설탕 500MG</div>
+    <div class="price">75.000₫</div>
+  </div>
+  <div class="item 간경변제" onclick="showDetails('악티소 라도 무설탕 500MG', '악티소 라도 무설탕 200MG', '악티소 더파코 설탕', '악티소 비타민 C', '악티소 알약')">
+    <img src="images/악티소 라도 무설탕 200MG.jpg" alt="악티소 라도 무설탕 200MG">
+    <div class="item-name">악티소 라도 무설탕 200MG</div>
+    <div class="price">55.000₫</div>
+  </div>
+  <div class="item 간경변제" onclick="showDetails('악티소 라도 무설탕 500MG', '악티소 라도 무설탕 200MG', '악티소 더파코 설탕', '악티소 비타민 C', '악티소 알약')">
+    <img src="images/악티소 더파코 설탕.jpg" alt="악티소 더파코 설탕">
+    <div class="item-name">악티소 더파코 설탕</div>
+    <div class="price">60.000₫</div>
+  </div>
+  <div class="item 간경변제" onclick="showDetails('악티소 라도 무설탕 500MG', '악티소 라도 무설탕 200MG', '악티소 더파코 설탕', '악티소 비타민 C', '악티소 알약')">
+    <img src="images/악티소 비타민 C.jpg" alt="악티소 비타민 C">
+    <div class="item-name">악티소 비타민 C</div>
+    <div class="price">50.000₫</div>
+  </div>
+  <div class="item 간경변제" onclick="showDetails('악티소 라도 무설탕 500MG', '악티소 라도 무설탕 200MG', '악티소 더파코 설탕', '악티소 비타민 C', '악티소 알약')">
+    <img src="images/악티소 알약.jpg" alt="악티소 알약">
+    <div class="item-name">악티소 알약</div>
+    <div class="price">60.000₫</div>
+  </div>
+  <div class="item 기침약" onclick="showDetails('Strepsils 막대사탕 - Original', 'Strepsils 막대사탕 - Orange', 'Strepsils 막대사탕 - Lemon', 'Strepsils 막대사탕 - Cool', 'Strepsils 16 알약', 'Strepsils 24 알약')">
+    <img src="images/Strepsils 막대사탕 - Original.jpg" alt="Strepsils 막대사탕 - Original">
+    <div class="item-name">Strepsils 막대사탕 - Original</div>
+    <div class="price">40.000₫</div>
+  </div>
+  <div class="item 기침약" onclick="showDetails('Strepsils 막대사탕 - Original', 'Strepsils 막대사탕 - Orange', 'Strepsils 막대사탕 - Lemon', 'Strepsils 막대사탕 - Cool', 'Strepsils 16 알약', 'Strepsils 24 알약')">
+    <img src="images/Strepsils 막대사탕 - Orange.jpg" alt="Strepsils 막대사탕 - Orange">
+    <div class="item-name">Strepsils 막대사탕 - Orange</div>
+    <div class="price">40.000₫</div>
+  </div>
+  <div class="item 기침약" onclick="showDetails('Strepsils 막대사탕 - Original', 'Strepsils 막대사탕 - Orange', 'Strepsils 막대사탕 - Lemon', 'Strepsils 막대사탕 - Cool', 'Strepsils 16 알약', 'Strepsils 24 알약')">
+    <img src="images/Strepsils 막대사탕 - Lemon.jpg" alt="Strepsils 막대사탕 - Lemon">
+    <div class="item-name">Strepsils 막대사탕 - Lemon</div>
+    <div class="price">40.000₫</div>
+  </div>
+   <div class="item 기침약" onclick="showDetails('Strepsils 막대사탕 - Original', 'Strepsils 막대사탕 - Orange', 'Strepsils 막대사탕 - Lemon', 'Strepsils 막대사탕 - Cool', 'Strepsils 16 알약', 'Strepsils 24 알약')">
+    <img src="images/Strepsils 막대사탕 - Cool.jpg" alt="Strepsils 막대사탕 - Cool">
+    <div class="item-name">Strepsils 막대사탕 - Cool</div>
+    <div class="price">40.000₫</div>
+  </div>
+  <div class="item 기침약" onclick="showDetails('Strepsils 막대사탕 - Original', 'Strepsils 막대사탕 - Orange', 'Strepsils 막대사탕 - Lemon', 'Strepsils 막대사탕 - Cool', 'Strepsils 16 알약', 'Strepsils 24 알약')">
+    <img src="images/Strepsils 16 알약.jpg" alt="Strepsils 16 알약">
+    <div class="item-name">Strepsils 16 알약</div>
+    <div class="price">45.000₫</div>
+  </div>
+  <div class="item 기침약" onclick="showDetails('Strepsils 막대사탕 - Original', 'Strepsils 막대사탕 - Orange', 'Strepsils 막대사탕 - Lemon', 'Strepsils 막대사탕 - Cool', 'Strepsils 16 알약', 'Strepsils 24 알약')">
+    <img src="images/Strepsils 24 알약.jpg" alt="Strepsils 24 알약">
+    <div class="item-name">Strepsils 24 알약</div>
+    <div class="price">55.000₫</div>
+  </div>
+  <div class="item 진통제" onclick="showDetails('Salonpas 20장 - 핫파스', 'Salonpas 40장 - 핫파스', 'Salonpas 200장 - 핫파스', 'Salonship 24장 - 콜라파스', 'Salonpas 5장 파스', 'Salonpas 로션', 'Salonpas 젤')">
+    <img src="images/Salonpas 20장 - 핫파스.jpg" alt="Salonpas 20장 - 핫파스">
+    <div class="item-name">Salonpas 20장 - 핫파스</div>
+    <div class="price">33.000₫</div>
+  </div>
+  <div class="item 진통제" onclick="showDetails('Salonpas 20장 - 핫파스', 'Salonpas 40장 - 핫파스', 'Salonpas 200장 - 핫파스', 'Salonship 24장 - 콜라파스', 'Salonpas 5장 파스', 'Salonpas 로션', 'Salonpas 젤')">
+    <img src="images/Salonpas 40장 - 핫파스.jpg" alt="Salonpas 40장 - 핫파스">
+    <div class="item-name">Salonpas 40장 - 핫파스</div>
+    <div class="price">65.000₫</div>
+  </div>
+  <div class="item 진통제" onclick="showDetails('Salonpas 20장 - 핫파스', 'Salonpas 40장 - 핫파스', 'Salonpas 200장 - 핫파스', 'Salonship 24장 - 콜라파스', 'Salonpas 5장 파스', 'Salonpas 로션', 'Salonpas 젤')">
+    <img src="images/Salonpas 200장 - 핫파스.jpg" alt="Salonpas 200장 - 핫파스">
+    <div class="item-name">Salonpas 200장 - 핫파스</div>
+    <div class="price">310.000₫</div>
+  </div>
+   <div class="item 진통제" onclick="showDetails('Salonpas 20장 - 핫파스', 'Salonpas 40장 - 핫파스', 'Salonpas 200장 - 핫파스', 'Salonsip 24장 - 콜라파스', 'Salonpas 5장 파스', 'Salonpas 로션', 'Salonpas 젤')">
+    <img src="images/Salonpas 5장 파스.jpg" alt="Salonpas 5장 파스">
+    <div class="item-name">Salonpas 5장 파스</div>
+    <div class="price">50.000₫</div>
+  </div>
+  <div class="item 진통제" onclick="showDetails('Salonpas 20장 - 핫파스', 'Salonpas 40장 - 핫파스', 'Salonpas 200장 - 핫파스', 'Salonsip 24장 - 콜라파스', 'Salonpas 5장 파스', 'Salonpas 로션', 'Salonpas 젤')">
+    <img src="images/Salonpas 로션.jpg" alt="Salonpas 로션">
+    <div class="item-name">Salonpas 로션</div>
+    <div class="price">240.000₫</div>
+  </div>
+  <div class="item 진통제" onclick="showDetails('Salonpas 20장 - 핫파스', 'Salonpas 40장 - 핫파스', 'Salonpas 200장 - 핫파스', 'Salonsip 24장 - 콜라파스', 'Salonpas 5장 파스', 'Salonpas 로션', 'Salonpas 젤')">
+    <img src="images/Salonpas 젤.jpg" alt="Salonpas 젤">
+    <div class="item-name">Salonpas 젤</div>
+    <div class="price">55.000₫</div>
+  </div>
+   <div class="item 진통제" onclick="showDetails('Salonpas 20장 - 핫파스', 'Salonpas 40장 - 핫파스', 'Salonpas 200장 - 핫파스', 'Salonsip 24장 - 콜라파스', 'Salonpas 5장 파스', 'Salonpas 로션', 'Salonpas 젤')">
+    <img src="images/Voltaren.jpg" alt="Voltaren">
+    <div class="item-name">Voltaren</div>
+    <div class="price">80.000₫</div>
+  </div>
+  <div class="item 진통제" onclick="showDetails('Salonpas 20장 - 핫파스', 'Salonpas 40장 - 핫파스', 'Salonpas 200장 - 핫파스', 'Salonsip 24장 - 콜라파스', 'Salonpas 5장', 'Salonpas 로션', 'Salonpas 젤')">
+    <img src="images/Salonsip 24장 - 콜라파스.jpg" alt="Salonsip 24장 - 콜라파스">
+    <div class="item-name">Salonsip 24장 - 콜라파스</div>
+    <div class="price">280.000₫</div>
+  </div>
+   <div class="item 치료제" onclick="showDetails('Dermatix 7G', 'Dermatix 15G', 'Dermatix Kids', 'Contractubex', 'Biafine')">
+    <img src="images/Dermatix 7G.jpg" alt="Dermatix 7G">
+    <div class="item-name">Dermatix 7G</div>
+    <div class="price">230.000₫</div>
+  </div>
+  <div class="item 치료제" onclick="showDetails('Dermatix 7G', 'Dermatix 15G', 'Dermatix Kids', 'Contractubex', 'Biafine')">
+    <img src="images/Dermatix 15G.jpg" alt="Dermatix 15G">
+    <div class="item-name">Dermatix 15G</div>
+    <div class="price">360.000₫</div>
+  </div>
+  <div class="item 치료제" onclick="showDetails('Dermatix 7G', 'Dermatix 15G', 'Dermatix Kids', 'Contractubex', 'Biafine')">
+    <img src="images/Dermatix Kids.jpg" alt="Dermatix Kids">
+    <div class="item-name">Dermatix Kids</div>
+    <div class="price">230.000₫</div>
+  </div>
+  <div class="item 치료제" onclick="showDetails('Dermatix 7G', 'Dermatix 15G', 'Dermatix Kids', 'Contractubex', 'Biafine')">
+    <img src="images/Contractubex.jpg" alt="Contractubex">
+    <div class="item-name">Contractubex</div>
+    <div class="price">200.000₫</div>
+  </div>
+  <div class="item 치료제" onclick="showDetails('Dermatix 7G', 'Dermatix 15G', 'Dermatix Kids', 'Contractubex', 'Biafine')">
+    <img src="images/Biafine.jpg" alt="Biafine">
+    <div class="item-name">Biafine</div>
+    <div class="price">130.000₫</div>
+  </div>
+  <div class="item 여드름약" onclick="showDetails('Differin', 'Acnes Jell', 'Acnes Patch', 'Hiteen Gel', 'Retacnyl', 'Tezkin', 'Canesten')">
+    <img src="images/Differin.jpg" alt="Differin">
+    <div class="item-name">Differin</div>
+    <div class="price">200.000₫</div>
+  </div>
+  <div class="item 여드름약" onclick="showDetails('Differin', 'Acnes Jell', 'Acnes Patch', 'Hiteen Gel', 'Retacnyl', 'Tezkin', 'Canesten')">
+    <img src="images/Acnes Jell.jpg" alt="Acnes Jell">
+    <div class="item-name">Acnes Jell</div>
+    <div class="price">75.000₫</div>
+  </div>
+  <div class="item 여드름약" onclick="showDetails('Differin', 'Acnes Jell', 'Acnes Patch', 'Hiteen Gel', 'Retacnyl', 'Tezkin', 'Canesten')">
+    <img src="images/Acnes Patch.jpg" alt="Acnes Patch">
+    <div class="item-name">Acnes Patch</div>
+    <div class="price">70.000₫</div>
+  </div>
+  <div class="item 여드름약" onclick="showDetails('Differin', 'Acnes Jell', 'Acnes Patch', 'Hiteen Gel', 'Retacnyl', 'Tezkin', 'Canesten')">
+    <img src="images/Hiteen Gel.jpg" alt="Hiteen Gel">
+    <div class="item-name">Hiteen Gel</div>
+    <div class="price">80.000₫</div>
+  </div>
+  <div class="item 여드름약" onclick="showDetails('Differin', 'Acnes Jell', 'Acnes Patch', 'Hiteen Gel', 'Retacnyl', 'Tezkin', 'Canesten')">
+    <img src="images/Retacnyl0.025%.jpg" alt="Retacnyl0.025%">
+    <div class="item-name">Retacnyl0.025%</div>
+    <div class="price">335.000₫</div>
+  </div>
+  <div class="item 여드름약" onclick="showDetails('Differin', 'Acnes Jell', 'Acnes Patch', 'Hiteen Gel', 'Retacnyl', 'Tezkin', 'Canesten')">
+    <img src="images/Retacnyl  0.05%.jpg" alt="Retacnyl  0.05%">
+    <div class="item-name">Retacnyl  0.05%</div>
+    <div class="price">350.000₫</div>
+  </div>
+  <div class="item 여드름약" onclick="showDetails('Differin', 'Acnes Jell', 'Acnes Patch', 'Hiteen Gel', 'Retacnyl', 'Tezkin', 'Canesten')">
+    <img src="images/Tezkin.jpg" alt="Tezkin">
+    <div class="item-name">Tezkin</div>
+    <div class="price">40.000₫</div>
+  </div>
+  <div class="item 여드름약" onclick="showDetails('Differin', 'Acnes Jell', 'Acnes Patch', 'Hiteen Gel', 'Retacnyl', 'Tezkin', 'Canesten')">
+    <img src="images/Canesten.jpg" alt="Canesten">
+    <div class="item-name">Canesten</div>
+    <div class="price">65.000₫</div>
+  </div>
+  <div class="item 치료제" onclick="showDetails('Tiger Balm', '고백호', '톈타오 오일', 'Urgo Water')">
+    <img src="images/Tiger Balm 19G W.jpg" alt="Tiger Balm 19G W">
+    <div class="item-name">Tiger Balm 19G W</div>
+    <div class="price">45.000₫</div>
+  </div>
+  <div class="item 치료제" onclick="showDetails('Tiger Balm', '고백호', '톈타오 오일', 'Urgo Water')">
+    <img src="images/Tiger Balm 30G W.jpg" alt="Tiger Balm 30G W">
+    <div class="item-name">Tiger Balm 30G W</div>
+    <div class="price">60.000₫</div>
+  </div>
+  <div class="item 치료제" onclick="showDetails('Tiger Balm', '고백호', '톈타오 오일', 'Urgo Water')">
+    <img src="images/Tiger Balm 30G R.jpg" alt="Tiger Balm 30G R">
+    <div class="item-name">Tiger Balm 30G R</div>
+    <div class="price">60.000₫</div>
+  </div>
+  <div class="item 치료제" onclick="showDetails('Tiger Balm', '고백호', '톈타오 오일', 'Urgo Water')">
+    <img src="images/고백호.jpg" alt="고백호">
+    <div class="item-name">고백호</div>
+    <div class="price">30.000₫</div>
+  </div>
+  <div class="item 치료제" onclick="showDetails('Tiger Balm', '고백호', '톈타오 오일', 'Urgo Water')">
+    <img src="images/톈타오 오일.jpg" alt="톈타오 오일">
+    <div class="item-name">톈타오 오일</div>
+    <div class="price">40.000₫</div>
+  </div>
+  <div class="item 치료제" onclick="showDetails('Tiger Balm', '고백호', '톈타오 오일', 'Urgo Water')">
+    <img src="images/Urgo Water 30장.jpg" alt="Urgo Water 30장">
+    <div class="item-name">Urgo Water 30장</div>
+    <div class="price">60.000₫</div>
+  </div>
+  <div class="item 치료제" onclick="showDetails('Tiger Balm', '고백호', '톈타오 오일', 'Urgo Water')">
+    <img src="images/Urgo Water 50장.jpg" alt="Urgo Water 50장">
+    <div class="item-name">Urgo Water 50장</div>
+    <div class="price">70.000₫</div>
+  </div>
+  <div class="item 감기약과비염" onclick="showDetails('Panadol', 'Decolgen', 'Efferalgan', 'Prospan 시럽', 'Prospan 막대사탕', ')">
+    <img src="images/Panadol Original 120개.jpg" alt="Panadol Original 120개">
+    <div class="item-name">Panadol Original 120개</div>
+    <div class="price">240.000₫</div>
+  </div>
+  <div class="item 감기약과비염" onclick="showDetails('Panadol', 'Decolgen', 'Efferalgan', 'Prospan 시럽', 'Prospan 막대사탕', ')">
+    <img src="images/Panadol Flu 180개.jpg" alt="Panadol Flu 180개">
+    <div class="item-name">Panadol Flu 180개</div>
+    <div class="price">320.000₫</div>
+  </div>
+  <div class="item 감기약과비염" onclick="showDetails('Panadol', 'Decolgen', 'Efferalgan', 'Prospan 시럽', 'Prospan 막대사탕', ')">
+    <img src="images/Panadol Extra 180개.jpg" alt="Panadol Extra 180개">
+    <div class="item-name">Panadol Extra 180개</div>
+    <div class="price">320.000₫</div>
+  </div>
+  <div class="item 감기약과비염" onclick="showDetails('Panadol', 'Decolgen', 'Efferalgan', 'Prospan 시럽', 'Prospan 막대사탕', ')">
+    <img src="images/Decolgen Forte.jpg" alt="Decolgen Forte">
+    <div class="item-name">Decolgen Forte</div>
+    <div class="price">200.000₫</div>
+  </div>
+  <div class="item 감기약과비염" onclick="showDetails('Panadol', 'Decolgen', 'Efferalgan', 'Prospan 시럽', 'Prospan 막대사탕', ')">
+    <img src="images/Decolgen ND.jpg" alt="Decolgen ND">
+    <div class="item-name">Decolgen ND</div>
+    <div class="price">200.000₫</div>
+  </div>
+  <div class="item 감기약과비염" onclick="showDetails('Panadol', 'Decolgen', 'Efferalgan', 'Prospan 시럽', 'Prospan 막대사탕', ')">
+    <img src="images/Zyrtec 비염.jpg" alt="Zyrtec 비염">
+    <div class="item-name">Zyrtec 비염</div>
+    <div class="price">100.000₫</div>
+  </div>
+  <div class="item 감기약과비염" onclick="showDetails('Panadol', 'Decolgen', 'Efferalgan', 'Prospan 시럽', 'Prospan 막대사탕', ')">
+    <img src="images/Certirizin 코 알레르기.jpg" alt="Certirizin 코 알레르기">
+    <div class="item-name">Certirizin 코 알레르기</div>
+    <div class="price">45.000₫</div>
+  </div>
+  <div class="item 감기약과비염" onclick="showDetails('Panadol', 'Decolgen', 'Efferalgan', 'Prospan 시럽', 'Prospan 막대사탕', ')">
+    <img src="images/Efferalgan.jpg" alt="Efferalgan">
+    <div class="Efferalgan">Efferalgan</div>
+    <div class="price">100.000₫</div>
+  </div>
+  <div class="item 위약" onclick="showDetails('Gaviscon', 'Dizzo')">
+    <img src="images/Dizzo.jpg" alt="Dizzo">
+    <div class="Dizzo.jpg">Dizzo</div>
+    <div class="price">100.000₫</div>
+  </div>
+  <div class="item 기침약" onclick="showDetails('Panadol', 'Decolgen', 'Efferalgan', 'Prospan 시럽', 'Prospan 막대사탕', ')">
+    <img src="images/Prospan 시럽.jpg" alt="Prospan 시럽">
+    <div class="Prospan 시럽">Prospan 시럽</div>
+    <div class="price">90.000₫</div>
+  </div>
+  <div class="item 기침약" onclick="showDetails('Panadol', 'Decolgen', 'Efferalgan', 'Prospan 시럽', 'Prospan 막대사탕', ')">
+    <img src="images/Prospan Forte 시럽.jpg" alt="Prospan Forte 시럽">
+    <div class="Prospan Forte 시럽">Prospan Forte 시럽</div>
+    <div class="price">100.000₫</div>
+  </div>
+  <div class="item 기침약" onclick="showDetails('Panadol', 'Decolgen', 'Efferalgan', 'Prospan 시럽', 'Prospan 막대사탕', ')">
+    <img src="images/Prospan 막대사탕.jpg" alt="Prospan 막대사탕">
+    <div class="Prospan 막대사탕">Prospan 막대사탕</div>
+    <div class="price">88.000₫</div>
+  </div>
+  <div class="item 위약" onclick="showDetails('Gaviscon 분홍색', 'Gavisco 파란색' 'Dizzo')">
+    <img src="images/Gaviscon 분홍색.jpg" alt="Gaviscon 분홍색">
+    <div class="Gaviscon 분홍색">Gaviscon 분홍색</div>
+    <div class="price">260.000₫</div>
+  </div>
+  <div class="item 위약" onclick="showDetails('Gaviscon 분홍색', 'Gavisco 파란색' 'Dizzo')">
+    <img src="images/Gaviscon 파란색.jpg" alt="Gaviscon 파란색">
+    <div class="Gaviscon 파란색">Gaviscon 파란색</div>
+    <div class="price">260.000₫</div>
+  </div>
+   <div class="item 건강식품" onclick="showDetails('Berocca', 'Multi Vitamin HC', 'Collagen', 'Probio', Bio Prosi', 'Vinaga', 'PV 과즙기름', 'Melatonin', 'Omega 3-6-9', 'Omega 3-6-10', '요안당', 'Slim Body')">
+    <img src="images/Berocca.jpg" alt="Berocca">
+    <div class="Berocca">Berocca</div>
+    <div class="price">85.000₫</div>
+  </div>
+  <div class="item 건강식품" onclick="showDetails('Berocca', 'Multi Vitamin HC', 'Collagen', 'Probio', Bio Prosi', 'Vinaga', 'PV 과즙기름', 'Melatonin', 'Omega 3-6-9', 'Omega 3-6-10', '요안당', 'Slim Body')">
+    <img src="images/Multi Vitamin HC.jpg" alt="Multi Vitamin HC">
+    <div class="Multi Vitamin HC">Multi Vitamin HC</div>
+    <div class="price">55.000₫</div>
+  </div>
+  <div class="item 건강식품" onclick="showDetails('Berocca', 'Multi Vitamin HC', 'Collagen', 'Probio', Bio Prosi', 'Vinaga', 'PV 과즙기름', 'Melatonin', 'Omega 3-6-9', 'Omega 3-6-10', '요안당', 'Slim Body')">
+    <img src="images/Collagen.jpg" alt="Collagen">
+    <div class="Collagen">Collagen</div>
+    <div class="price">300.000₫</div>
+  </div>
+  <div class="item 건강식품" onclick="showDetails('Berocca', 'Multi Vitamin HC', 'Collagen', 'Probio', Bio Prosi', 'Vinaga', 'PV 과즙기름', 'Melatonin', 'Omega 3-6-9', 'Omega 3-6-10', '요안당', 'Slim Body')">
+    <img src="images/Probio.jpg" alt="Probio">
+    <div class="Probio">Probio</div>
+    <div class="price">40.000₫</div>
+  </div>
+  <div class="item 건강식품" onclick="showDetails('Berocca', 'Multi Vitamin HC', 'Collagen', 'Probio', Bio Prosi', 'Vinaga', 'PV 과즙기름', 'Melatonin', 'Omega 3-6-9', 'Omega 3-6-10', '요안당', 'Slim Body')">
+    <img src="images/Bio Prosi.jpg" alt="Bio Prosi">
+    <div class="Bio Prosi">Bio Prosi</div>
+    <div class="price">190.000₫</div>
+  </div>
+  <div class="item 건강식품" onclick="showDetails('Berocca', 'Multi Vitamin HC', 'Collagen', 'Probio', Bio Prosi', 'Vinaga', 'PV 과즙기름', 'Melatonin', 'Omega 3-6-9', 'Omega 3-6-10', '요안당', 'Slim Body')">
+    <img src="images/Vinaga.jpg" alt="Vinaga">
+    <div class="Vinaga">Vinaga</div>
+    <div class="price">85.000₫</div>
+  </div>
+   <div class="item 건강식품" onclick="showDetails('Berocca', 'Multi Vitamin HC', 'Collagen', 'Probio', Bio Prosi', 'Vinaga', 'PV 과즙기름', 'Melatonin', 'Omega 3-6-9', 'Omega 3-6-10', '요안당', 'Slim Body')">
+    <img src="images/PV 과즙기름.jpg" alt="PV 과즙기름">
+    <div class="PV 과즙기름">PV 과즙기름</div>
+    <div class="price">75.000₫</div>
+  </div>
+  <div class="item 건강식품" onclick="showDetails('Berocca', 'Multi Vitamin HC', 'Collagen', 'Probio', Bio Prosi', 'Vinaga', 'PV 과즙기름', 'Melatonin', 'Omega 3-6-9', 'Omega 3-6-10', '요안당', 'Slim Body')">
+    <img src="images/Melatonin.jpg" alt="Melatonin">
+    <div class="Melatonin">Melatonin</div>
+    <div class="price">210.000₫</div>
+  </div>
+  <div class="item 건강식품" onclick="showDetails('Berocca', 'Multi Vitamin HC', 'Collagen', 'Probio', Bio Prosi', 'Vinaga', 'PV 과즙기름', 'Melatonin', 'Omega 3-6-9', 'Omega 3-6-10', '요안당', 'Slim Body')">
+    <img src="images/Omega 3-6-9.jpg" alt="Omega 3-6-9">
+    <div class="Omega 3-6-9">Omega 3-6-9</div>
+    <div class="price">120.000₫</div>
+  </div>
+  <div class="item 건강식품" onclick="showDetails('Berocca', 'Multi Vitamin HC', 'Collagen', 'Probio', Bio Prosi', 'Vinaga', 'PV 과즙기름', 'Melatonin', 'Omega 3-6-9', 'Omega 3-6-10', '요안당', 'Slim Body')">
+    <img src="images/Omega 3-6-9.jpg" alt="Omega 3-6-9">
+    <div class="Omega 3-6-9">Omega 3-6-9</div>
+    <div class="price">120.000₫</div>
+  </div>
+  <div class="item 건강식품" onclick="showDetails('Berocca', 'Multi Vitamin HC', 'Collagen', 'Probio', Bio Prosi', 'Vinaga', 'PV 과즙기름', 'Melatonin', 'Omega 3-6-9', 'Omega 3-6-10', '요안당', 'Slim Body')">
+    <img src="images/Omega 3-6-9 plus.jpg" alt="Omega 3-6-9 plus">
+    <div class="Omega 3-6-9 plus">Omega 3-6-9 plus</div>
+    <div class="price">210.000₫</div>
+  </div>
+  <div class="item 건강식품" onclick="showDetails('Berocca', 'Multi Vitamin HC', 'Collagen', 'Probio', Bio Prosi', 'Vinaga', 'PV 과즙기름', 'Melatonin', 'Omega 3-6-9', 'Omega 3-6-10', '요안당', 'Slim Body')">
+    <img src="images/요안당.jpg" alt="요안당">
+    <div class="요안당">요안당</div>
+    <div class="price">185.000₫</div>
+  </div>
+  <div class="item 건강식품" onclick="showDetails('Berocca', 'Multi Vitamin HC', 'Collagen', 'Probio', Bio Prosi', 'Vinaga', 'PV 과즙기름', 'Melatonin', 'Omega 3-6-9', 'Omega 3-6-10', '요안당', 'Slim Body')">
+    <img src="images/Slim Body.jpg" alt="Slim Body">
+    <div class="Slim Body">Slim Body</div>
+    <div class="price">300.000₫</div>
+  </div>
+</div>
+
+<div class="overlay" onclick="closePopup()"></div>
+<div class="popup" id="popup">
+  <img id="popup-img" src="" alt="Ảnh sản phẩm">
+  <h3 id="popup-title"></h3>
+  <p><strong>Công dụng:</strong> <span id="popup-use"></span></p>
+  <p><strong>Cách dùng:</strong> <span id="popup-usage"></span></p>
+  <p><strong>Xuất xứ:</strong> <span id="popup-origin"></span></p>
+  <button class="popup-close" onclick="closePopup()">Đóng</button>
+</div>
+
+<script>
+  const productData = {
+    "Bepanthen Balm": {
+      img: "images/Bepanthen Balm.jpg",
+      use: "Dưỡng ẩm, trị hăm tã, làm dịu da khô",
+      usage: "Thoa đều vùng da khô, ngày 2–3 lần",
+      origin: "Đức"
+    },
+    "악티소 라도 무설탕 500MG": {
+      img: "images/악티소 라도 무설탕 500MG.jpg",
+      use: "Tăng cường chức năng gan, hỗ trợ điều trị xơ gan",
+      usage: "Uống sau ăn, mỗi ngày 1 viên",
+      origin: "Hàn Quốc"
+    }
+  };
+
+  function filterMenu(type) {
+    const items = document.querySelectorAll('.item');
+    items.forEach(item => {
+      item.style.display = type === 'all' || item.classList.contains(type) ? 'inline-block' : 'none';
+    });
+  }
+
+  function showDetails(name) {
+    const info = productData[name];
+    document.getElementById('popup-title').innerText = name;
+    document.getElementById('popup-use').innerText = info?.use || 'Đang cập nhật';
+    document.getElementById('popup-usage').innerText = info?.usage || 'Đang cập nhật';
+    document.getElementById('popup-origin').innerText = info?.origin || 'Đang cập nhật';
+    document.getElementById('popup-img').src = info?.img || '';
+    document.querySelector('.overlay').style.display = 'block';
+    document.getElementById('popup').style.display = 'block';
+  }
+
+  function closePopup() {
+    document.querySelector('.overlay').style.display = 'none';
+    document.getElementById('popup').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
